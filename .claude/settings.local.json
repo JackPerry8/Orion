@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" https://huggingface.co)",
+      "Bash(python -c \":*)",
+      "Bash(python -c \"from huggingface_hub import whoami; print\\(''hf_hub ok''\\)\")",
+      "Bash(conda env:*)",
+      "Bash(python -c \"import pyannote.audio; print\\(''pyannote ok''\\)\")",
+      "Bash(python -c \"import python_dotenv\")",
+      "Bash(python -c \"from dotenv import load_dotenv; print\\(''dotenv ok''\\)\")",
+      "Bash(/Users/jackperry/opt/anaconda3/bin/python -c \":*)",
+      "Bash(/Users/jackperry/scribe/.gitignore:*)",
+      "Bash(chmod +x /Users/jackperry/scribe/start.sh)"
+    ]
+  }
+}
