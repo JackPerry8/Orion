@@ -55,8 +55,8 @@ sudo pacman -S ffmpeg
 
 ```bash
 # 1. Clone
-git clone https://github.com/your-username/kratos.git
-cd kratos
+git clone https://github.com/your-username/orion.git
+cd orion
 
 # 2. Configure
 cp .env.example .env
@@ -172,7 +172,7 @@ Ensure you have the `Calibri` font installed (it ships with Microsoft Office). A
 ## Project Structure
 
 ```
-kratos/
+Orion/
 ├── backend/
 │   ├── app.py              FastAPI server + all backend logic
 │   ├── requirements.txt
