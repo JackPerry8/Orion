@@ -1,4 +1,4 @@
-# Kratos
+# Orion
 
 **Local audio transcription and AI summarization — record or upload audio, get a transcript and summary, export as .docx.**
 
