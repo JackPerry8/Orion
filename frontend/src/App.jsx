@@ -965,6 +965,7 @@ export default function App() {
         Orion · Powered by{' '}
         <span className="text-slate-400">OpenAI Whisper</span>{' '}+{' '}
         <span className="text-slate-400">Anthropic Claude</span>
+        <div className="mt-1 text-[11px] italic opacity-60">a Jack Perry production</div>
       </footer>
 
       {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
