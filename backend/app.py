@@ -48,13 +48,24 @@ whisper_model = whisper.load_model(WHISPER_MODEL_SIZE)
 print(f"Whisper model '{WHISPER_MODEL_SIZE}' loaded successfully.\n")
 
 # Anthropic client — held in a mutable container so /api/settings can reload it
-_anthropic_api_key = os.getenv("ANTHROPIC_API_KEY", "").strip()
-anthropic_client = anthropic.Anthropic(api_key=_anthropic_api_key) if _anthropic_api_key else None
+def _is_real_key(key: str) -> bool:
+    """Return True only if the key looks like a real value (not a placeholder)."""
+    return bool(key) and key != "your_api_key_here" and not key.startswith("your_")
+
+def _make_anthropic_client():
+    key = os.getenv("ANTHROPIC_API_KEY", "").strip()
+    if not _is_real_key(key):
+        return None
+    try:
+        return anthropic.Anthropic(api_key=key)
+    except Exception:
+        return None
+
+anthropic_client = _make_anthropic_client()
 
 def _reload_anthropic_client():
     global anthropic_client
-    key = os.getenv("ANTHROPIC_API_KEY", "").strip()
-    anthropic_client = anthropic.Anthropic(api_key=key) if key else None
+    anthropic_client = _make_anthropic_client()
 
 # Diarization pipeline — loaded lazily on first use so startup isn't slowed
 # when diarization is not needed.
@@ -72,7 +83,7 @@ def _get_diarization_pipeline():
         hf_token = os.getenv("HF_TOKEN", "").strip()
         if not hf_token:
             raise RuntimeError(
-                "HF_TOKEN is not set. Add your Hugging Face token to .env to use speaker diarization."
+                "Hugging Face token is not configured. Add it in the Settings page to use speaker diarization."
             )
         try:
             import torch
@@ -404,8 +415,8 @@ async def transcribe_stream(file_id: str, diarize: bool = Query(False)):
 async def summarize_transcript(request: SummarizeRequest):
     if not anthropic_client:
         raise HTTPException(
-            status_code=500,
-            detail="ANTHROPIC_API_KEY is not set. Please add it to your .env file.",
+            status_code=400,
+            detail="Anthropic API key is not configured. Add it in the Settings page.",
         )
 
     format_prompts = {
